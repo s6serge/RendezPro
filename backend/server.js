@@ -4,15 +4,15 @@
 
 //import'dotenv/config';
 
-import express, { json } from 'express';
-import helmet from 'helmet';
-import cors from 'cors';
-import compression from 'compression';
-import bodyParser from 'body-parser'; 
-import dotenv from 'dotenv';
+import express, { json } from "express";
+import helmet from "helmet";
+import cors from "cors";
+import compression from "compression";
+import bodyParser from "body-parser";
+import dotenv from "dotenv";
 
 // importer la connexion a la base de donnees
-import database from '../Groupe05/configuration/connexion.js';
+import database from "../backend/configuration/connexion.js";
 
 //const ENV = dotenv.config().parsed
 //dotenv.config()
@@ -21,52 +21,47 @@ import database from '../Groupe05/configuration/connexion.js';
 //creation du serveur
 const app = express();
 
-
 //Ajouter des middlewares a noter que (app.use(json)) doit etre en dernier
 app.use(helmet());
 app.use(cors());
 app.use(compression());
-app.use(json())
+app.use(json());
 // Middleware pour parser les requêtes JSON
 app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({ extended: false }))
-
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //routes
 
-import administrateurCRoute from "../Groupe05/routes/administrateurCRoute.js"
-import docteurRoute from "../Groupe05/routes/docteurRoute.js"
-import patientRoute from "../Groupe05/routes/patientRoute.js"
-import rendezVousRoute from "../Groupe05/routes/rendezVousRoute.js"
-import salleConsultation from "../Groupe05/routes/salleConsultationRoute.js"
-import servMedDocteur from "../Groupe05/routes/servMedDocteurRoute.js"
-import serviceMedical from '../Groupe05/routes/serviceMedicalRoute.js'
+import administrateurCRoute from "../backend/routes/administrateurCRoute.js";
+import docteurRoute from "../backend/routes/docteurRoute.js";
+import patientRoute from "../backend/routes/patientRoute.js";
+import rendezVousRoute from "../backend/routes/rendezVousRoute.js";
+import salleConsultation from "../backend/routes/salleConsultationRoute.js";
+import servMedDocteur from "../backend/routes/servMedDocteurRoute.js";
+import serviceMedical from "../backend/routes/serviceMedicalRoute.js";
 
-import authRoute from "../Groupe05/routes/authRoute.js"
+import authRoute from "../backend/routes/authRoute.js";
 
-//import router from "../Groupe05/routes/administrateurCRoute.js"
+//import router from "../backend/routes/administrateurCRoute.js"
 
+//Generation des tables
 
+app.use("/api/administrateurs", administrateurCRoute);
+app.use("/api/docteur", docteurRoute);
+app.use("/api/patients", patientRoute);
+app.use("/api/rendezvous", rendezVousRoute);
+app.use("/api/salles", salleConsultation);
 
+app.use("/api/", servMedDocteur);
 
-//Generation des tables 
+app.use("/api/services", serviceMedical);
 
-app.use('/api/administrateurs', administrateurCRoute)
-app.use('/api/docteur', docteurRoute)
-app.use('/api/patients', patientRoute)
-app.use('/api/rendezvous', rendezVousRoute)
-app.use('/api/salles', salleConsultation)
+app.use("/api/login", authRoute);
 
-app.use('/api/', servMedDocteur)
+app.use("/api/servdoct", servMedDocteur);
 
-app.use('/api/services', serviceMedical)
-
-app.use('/api/login', authRoute)
-
-app.use('/api/servdoct', servMedDocteur)
-
-database.sync({ alter: true })
+database.sync({ alter: true });
 
 //lancer le serveur
 
@@ -74,6 +69,6 @@ database.sync({ alter: true })
 //console.info('serveur demarer:')
 //console.info('http://localhost:' + process.env.PORT)
 
-const PORT = dotenv.config().parsed.PORT
+const PORT = dotenv.config().parsed.PORT;
 
-app.listen(PORT, () => console.log(`Le serveur tourne sur le port ${PORT}`))
+app.listen(PORT, () => console.log(`Le serveur tourne sur le port ${PORT}`));
