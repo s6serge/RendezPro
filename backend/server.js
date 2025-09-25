@@ -1,8 +1,6 @@
 //Groupe 5  : Systeme de gestion des reservation dans un hopital
 
 //1- TCHUENKAM KAMDEM SERGE ALAIN
-//2- Salima Messouci
-//3- Othmane El Baroudi
 
 //import'dotenv/config';
 
